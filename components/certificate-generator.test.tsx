@@ -17,4 +17,15 @@ describe("CertificateGenerator", () => {
 
     expect(screen.getByText("อานนท์")).toBeInTheDocument();
   });
+
+  it("clears the name when reset is pressed", () => {
+    render(<CertificateGenerator />);
+    const input = screen.getByLabelText("ชื่อผู้ได้รับการรับรอง");
+
+    fireEvent.change(input, { target: { value: "Ada" } });
+    fireEvent.click(screen.getByRole("button", { name: "ล้างชื่อ" }));
+
+    expect(input).toHaveValue("");
+    expect(screen.getByText("ใส่ชื่อของคุณ")).toBeInTheDocument();
+  });
 });
