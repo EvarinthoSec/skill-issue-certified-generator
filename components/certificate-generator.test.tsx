@@ -18,6 +18,17 @@ describe("CertificateGenerator", () => {
     expect(screen.getByText("อานนท์")).toBeInTheDocument();
   });
 
+  it("preserves spaces while typing a multi-word name", () => {
+    render(<CertificateGenerator />);
+    const input = screen.getByLabelText("ชื่อผู้ได้รับการรับรอง") as HTMLInputElement;
+
+    for (const character of "Ada Lovelace") {
+      fireEvent.change(input, { target: { value: input.value + character } });
+    }
+
+    expect(screen.getByTestId("certificate-name")).toHaveTextContent("Ada Lovelace");
+  });
+
   it("limits astral Unicode names to 32 code points", () => {
     render(<CertificateGenerator />);
     const input = screen.getByLabelText("ชื่อผู้ได้รับการรับรอง");

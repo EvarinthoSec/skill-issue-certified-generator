@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import CertificateCard from "./certificate-card";
-import { MAX_CERTIFICATE_NAME_LENGTH, normalizeCertificateName } from "../lib/certificate";
+import {
+  limitCertificateNameInput,
+  MAX_CERTIFICATE_NAME_LENGTH,
+  normalizeCertificateName,
+} from "../lib/certificate";
 
 export default function CertificateGenerator() {
   const [name, setName] = useState("");
@@ -27,7 +31,7 @@ export default function CertificateGenerator() {
             id="certificate-name"
             name="certificate-name"
             value={name}
-            onChange={(event) => setName(normalizeCertificateName(event.target.value))}
+            onChange={(event) => setName(limitCertificateNameInput(event.target.value))}
             autoComplete="name"
             placeholder="เช่น อานนท์ ใจดี"
             className="pencil-input mt-3 w-full px-4 py-3 text-base"
