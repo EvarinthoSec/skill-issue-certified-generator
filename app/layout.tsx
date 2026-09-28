@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Skill Issue Certified",
-  description: "สร้างการ์ดรับรองสไตล์ลายเส้นดินสอพร้อมชื่อของคุณ",
+  title: "Skill Issue Certified Generator",
+  description: "Skill Issue Certified Generator, a pencil-style certificate card maker.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="th" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

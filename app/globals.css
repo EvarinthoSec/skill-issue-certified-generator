@@ -7,6 +7,10 @@
   --ink-soft: #686258;
   --accent: #d5efc2;
   --shadow: rgba(37, 35, 31, 0.2);
+  --card-surface: #fffdf7;
+  --card-ink: #25231f;
+  --card-soft: #686258;
+  --danger: #ff4d3d;
 }
 
 @theme inline {
@@ -50,7 +54,13 @@ body::after {
 
 .pencil-card {
   min-height: 360px;
-  background: linear-gradient(135deg, var(--card), #f8f4e9);
+  border-color: var(--ink);
+  background:
+    linear-gradient(rgba(37, 35, 31, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 86% 18%, rgba(255, 77, 61, 0.12), transparent 22%),
+    var(--card-surface);
+  background-size: 100% 8px, 100% 100%, 100% 100%;
+  box-shadow: 5px 6px 0 rgba(37, 35, 31, 0.28);
 }
 
 .pencil-card::before,
@@ -76,9 +86,82 @@ body::after {
 
 .pencil-kicker { font-size: 0.75rem; }
 
+.certificate-overline,
+.certificate-kicker {
+  color: var(--card-soft);
+  font-family: Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.certificate-title {
+  margin: 0.35rem 0 0;
+  color: var(--card-ink);
+  font-family: Arial, sans-serif;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 950;
+  letter-spacing: -0.08em;
+  line-height: 0.86;
+}
+
+.certificate-title-accent {
+  color: var(--danger);
+  text-shadow: 1px 1px 0 #6d201a;
+}
+
+.certificate-subtitle {
+  max-width: 19rem;
+  margin-top: 0.9rem;
+  color: var(--card-soft);
+  font-family: Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.certificate-kicker { font-size: 0.75rem; }
+
+.certificate-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--card-soft);
+  font-family: Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.certificate-signature {
+  font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.certificate-generated {
+  margin-top: 0.8rem;
+  color: #6f6a62;
+  font-family: Arial, sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.certificate-rule {
+  background: var(--danger);
+  opacity: 0.9;
+}
+
 .pencil-name {
   margin-top: 1rem;
   overflow-wrap: anywhere;
+  color: var(--card-ink);
   font-size: clamp(2rem, 7vw, 4.5rem);
   font-weight: 800;
   line-height: 1.1;
@@ -97,7 +180,9 @@ body::after {
 }
 
 .pencil-input:focus-visible,
-.pencil-button:focus-visible {
+.pencil-button:focus-visible,
+.language-button:focus-visible,
+.export-button:focus-visible {
   outline: 3px dashed var(--ink);
   outline-offset: 3px;
 }
@@ -105,9 +190,28 @@ body::after {
 .pencil-button { transition: background-color 160ms ease, color 160ms ease, transform 160ms ease; }
 .pencil-button:hover { background: var(--ink); color: var(--card); transform: translateY(-2px) rotate(-0.4deg); }
 .pencil-mark { font-size: 2rem; }
-.pencil-seal { display: grid; width: 3rem; height: 3rem; place-items: center; border: 2px solid var(--ink); border-radius: 50%; background: var(--accent); font-size: 1.4rem; }
+.pencil-seal { display: grid; width: 3.5rem; height: 3.5rem; place-items: center; border: 2px solid var(--ink); border-radius: 50%; background: var(--danger); color: var(--card-surface); font-size: 1.6rem; box-shadow: 3px 3px 0 rgba(37, 35, 31, 0.2); }
+
+.export-button {
+  border: 2px solid var(--ink);
+  border-radius: 10px 4px 12px 5px / 5px 12px 4px 10px;
+  background: var(--ink);
+  color: var(--card);
+  cursor: pointer;
+  padding: 0.7rem 0.5rem;
+  font-family: Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  transition: transform 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+.export-button:hover:not(:disabled) { background: var(--danger); color: var(--card); transform: translateY(-2px) rotate(-0.4deg); }
+.export-button:disabled { cursor: wait; opacity: 0.6; }
+.export-button-secondary { background: var(--card); color: var(--ink); }
 
 @media (prefers-reduced-motion: reduce) {
-  .pencil-button { transition: none; }
-  .pencil-button:hover { transform: none; }
+  .pencil-button,
+  .export-button { transition: none; }
+  .pencil-button:hover,
+  .export-button:hover:not(:disabled) { transform: none; }
 }

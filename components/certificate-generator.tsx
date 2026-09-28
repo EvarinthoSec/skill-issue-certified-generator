@@ -7,25 +7,46 @@ import {
   MAX_CERTIFICATE_NAME_LENGTH,
   normalizeCertificateName,
 } from "../lib/certificate";
+import {
+  buildCertificateSvg,
+  downloadCertificatePng,
+  downloadCertificateSvg,
+} from "../lib/certificate-export";
 
 export default function CertificateGenerator() {
   const [name, setName] = useState("");
+  const [exporting, setExporting] = useState<"png" | "svg" | null>(null);
   const displayName = normalizeCertificateName(name);
+
+  async function handleExport(format: "png" | "svg") {
+    const svg = buildCertificateSvg(displayName);
+    setExporting(format);
+
+    try {
+      if (format === "svg") {
+        downloadCertificateSvg(svg);
+      } else {
+        await downloadCertificatePng(svg);
+      }
+    } finally {
+      setExporting(null);
+    }
+  }
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center">
       <section className="pencil-panel p-6 sm:p-8" aria-labelledby="generator-heading">
         <p className="pencil-label">START HERE</p>
         <h2 id="generator-heading" className="mt-3 text-3xl font-bold sm:text-4xl">
-          ใส่ชื่อ แล้วรับใบรับรอง
+          Add your name, get certified
         </h2>
         <p className="mt-4 max-w-md text-sm leading-7 text-[var(--ink-soft)]">
-          พิมพ์ชื่อของคุณเพื่อดูตัวอย่างการ์ด Skill Issue Certified แบบลายเส้นดินสอทันที
+          Type your name to preview your Skill Issue Certified card instantly.
         </p>
 
         <div className="mt-8">
           <label className="pencil-label" htmlFor="certificate-name">
-            ชื่อผู้ได้รับการรับรอง
+            Certified name
           </label>
           <input
             id="certificate-name"
@@ -33,11 +54,11 @@ export default function CertificateGenerator() {
             value={name}
             onChange={(event) => setName(limitCertificateNameInput(event.target.value))}
             autoComplete="name"
-            placeholder="เช่น อานนท์ ใจดี"
+            placeholder="e.g. Ada Lovelace"
             className="pencil-input mt-3 w-full px-4 py-3 text-base"
           />
           <div className="mt-2 flex items-center justify-between gap-4 text-xs text-[var(--ink-soft)]">
-            <span>แสดงผลแบบเรียลไทม์</span>
+            <span>Live preview</span>
             <span>{Array.from(displayName).length}/{MAX_CERTIFICATE_NAME_LENGTH}</span>
           </div>
         </div>
@@ -47,8 +68,33 @@ export default function CertificateGenerator() {
           onClick={() => setName("")}
           className="pencil-button mt-6 w-full px-4 py-3 text-sm font-bold"
         >
-          ล้างชื่อ
+          Clear name
         </button>
+
+        <div className="mt-8 border-t-2 border-dashed border-[var(--ink)]/30 pt-6">
+          <p className="pencil-label">EXPORT YOUR CARD</p>
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => void handleExport("png")}
+              disabled={exporting !== null}
+              className="export-button"
+            >
+              {exporting === "png" ? "Preparing..." : "Download PNG"}
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleExport("svg")}
+              disabled={exporting !== null}
+              className="export-button export-button-secondary"
+            >
+              {exporting === "svg" ? "Preparing..." : "Download SVG"}
+            </button>
+          </div>
+          <p className="mt-2 text-xs text-[var(--ink-soft)]">
+            PNG for sharing. SVG for editing and printing.
+          </p>
+        </div>
       </section>
 
       <div>
