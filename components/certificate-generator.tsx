@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import CertificateCard from "./certificate-card";
-import { normalizeCertificateName } from "../lib/certificate";
+import { MAX_CERTIFICATE_NAME_LENGTH, normalizeCertificateName } from "../lib/certificate";
 
 export default function CertificateGenerator() {
   const [name, setName] = useState("");
@@ -27,15 +27,14 @@ export default function CertificateGenerator() {
             id="certificate-name"
             name="certificate-name"
             value={name}
-            onChange={(event) => setName(event.target.value)}
-            maxLength={32}
+            onChange={(event) => setName(normalizeCertificateName(event.target.value))}
             autoComplete="name"
             placeholder="เช่น อานนท์ ใจดี"
             className="pencil-input mt-3 w-full px-4 py-3 text-base"
           />
           <div className="mt-2 flex items-center justify-between gap-4 text-xs text-[var(--ink-soft)]">
             <span>แสดงผลแบบเรียลไทม์</span>
-            <span>{displayName.length}/32</span>
+            <span>{Array.from(displayName).length}/{MAX_CERTIFICATE_NAME_LENGTH}</span>
           </div>
         </div>
 
